@@ -54,8 +54,19 @@ pipeline:
                       DOCKERFILE_PATH="Dockerfile"
                       BUILD_CONTEXT="."
 
-                      # Login to Docker Hub using Harness secret
-                      echo "${HARNESS_SECRET_docker_secret}" | docker login -u vijaysoundarapandiyan --password-stdin
+                      # Create Docker config directory
+                      mkdir -p ~/.docker
+
+                      # Write credentials to config.json using Harness secret
+                      cat > ~/.docker/config.json <<EOF
+                      {
+                        "auths": {
+                          "https://index.docker.io/v1/": {
+                            "auth": "$(echo -n 'vijaysoundarapandiyan:${HARNESS_SECRET_docker_secret}' | base64)"
+                          }
+                        }
+                      }
+                      EOF
 
                       # Build the image
                       docker build -t ${IMAGE_NAME}:${IMAGE_TAG} -f ${DOCKERFILE_PATH} ${BUILD_CONTEXT}
