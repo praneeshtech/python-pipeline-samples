@@ -38,35 +38,29 @@ pipeline:
                     command: |-
                       pwd
                       ls -ltra
-    - stage:
-        name: "Docker Build "
-        identifier: Docker_Build
-        description: ""
-        type: CI
-        spec:
-          cloneCodebase: true
-          caching:
-            enabled: true
-            override: false
-            paths: []
-          platform:
-            os: Linux
-            arch: Amd64
-          runtime:
-            type: Cloud
-            spec: {}
-          execution:
-            steps:
               - step:
-                  type: BuildAndPushDockerRegistry
-                  name: BuildAndPushDockerRegistry
-                  identifier: BuildAndPushDockerRegistry_1
+                  type: Run
+                  name: Image Build and Push
+                  identifier: Image_Build_and_Push
                   spec:
-                    connectorRef: docker_connector
-                    imageName: vijaysoundarapandiyan/python-pipeline-samples
-                    repo: python-pipeline-samples
-                    tags:
-                      - "1.0"
-                    caching: true
-          buildIntelligence:
-            enabled: false
+                    shell: Sh
+                    command: |-
+                      #!/bin/bash
+                      set -e
+
+                      # Define variables
+                      IMAGE_NAME="vijaysoundarapandiyan/python-pipeline-samples"
+                      IMAGE_TAG="1.0"
+                      DOCKERFILE_PATH="Dockerfile"
+                      BUILD_CONTEXT="."
+
+                      # Login to Docker Hub using Harness secret
+                      echo "${HARNESS_SECRET_docker_secret}" | docker login -u vijaysoundarapandiyan --password-stdin
+
+                      # Build the image
+                      docker build -t ${IMAGE_NAME}:${IMAGE_TAG} -f ${DOCKERFILE_PATH} ${BUILD_CONTEXT}
+
+                      # Push the image
+                      docker push ${IMAGE_NAME}:${IMAGE_TAG}
+
+                      echo "✅ Docker image pushed: ${IMAGE_NAME}:${IMAGE_TAG}"
