@@ -65,6 +65,6 @@ pipeline:
                     connectorRef: docker_connector
                     repo: python-pipeline-samples
                     tags:
-                      - "1.0"
+                      - vijaysoundarapandiyan/python-pipeline-samples
           buildIntelligence:
             enabled: false
