@@ -38,3 +38,33 @@ pipeline:
                     command: |-
                       pwd
                       ls -ltra
+    - stage:
+        name: "Docker Build "
+        identifier: Docker_Build
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          caching:
+            enabled: true
+            override: false
+            paths: []
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: BuildAndPushDockerRegistry_1
+                  identifier: BuildAndPushDockerRegistry_1
+                  spec:
+                    connectorRef: docker_connector
+                    repo: python-pipeline-samples
+                    tags:
+                      - "1.0"
+          buildIntelligence:
+            enabled: false
