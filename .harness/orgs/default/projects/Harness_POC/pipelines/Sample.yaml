@@ -1,0 +1,40 @@
+pipeline:
+  name: Sample
+  identifier: Sample
+  projectIdentifier: Harness_POC
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: praneeshtech
+        repoName: python-pipeline-samples
+        build: <+input>
+  stages:
+    - stage:
+        name: "Listing directories "
+        identifier: Listing_directories
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          caching:
+            enabled: true
+            override: false
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Directory Check
+                  identifier: Directory_Check
+                  spec:
+                    shell: Sh
+                    command: |-
+                      pwd
+                      ls -ltra
