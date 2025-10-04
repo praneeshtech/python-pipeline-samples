@@ -1,0 +1,14 @@
+inputSet:
+  name: python
+  identifier: python
+  orgIdentifier: default
+  projectIdentifier: Harness_POC
+  pipeline:
+    identifier: Sample
+    properties:
+      ci:
+        codebase:
+          build:
+            type: branch
+            spec:
+              branch: <+trigger.branch>
