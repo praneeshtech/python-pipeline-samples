@@ -59,12 +59,14 @@ pipeline:
             steps:
               - step:
                   type: BuildAndPushDockerRegistry
-                  name: BuildAndPushDockerRegistry_1
+                  name: BuildAndPushDockerRegistry
                   identifier: BuildAndPushDockerRegistry_1
                   spec:
                     connectorRef: docker_connector
+                    imageName: vijaysoundarapandiyan/python-pipeline-samples
                     repo: python-pipeline-samples
                     tags:
-                      - vijaysoundarapandiyan/python-pipeline-samples
+                      - "1.0"
+                    caching: true
           buildIntelligence:
             enabled: false
